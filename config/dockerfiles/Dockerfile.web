@@ -2,7 +2,7 @@ FROM gliderlabs/alpine:3.3
 
 WORKDIR /var/app
 
-RUN apk-install elixir erlang-crypto erlang-parsetools erlang-syntax-tools
+RUN apk-install elixir erlang-crypto erlang-parsetools erlang-syntax-tools postgresql
 RUN mix local.hex --force && mix local.rebar
 
 ADD mix.exs /var/app/mix.exs
