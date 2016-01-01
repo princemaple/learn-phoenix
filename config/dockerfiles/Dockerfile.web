@@ -1,0 +1,20 @@
+FROM gliderlabs/alpine:3.3
+
+WORKDIR /var/app
+
+RUN apk-install elixir erlang-crypto erlang-parsetools erlang-syntax-tools
+RUN mix local.hex --force && mix local.rebar
+
+ADD mix.exs /var/app/mix.exs
+ADD mix.lock /var/app/mix.lock
+
+RUN mix deps.get && mix deps.compile
+
+ADD config /var/app/config
+ADD lib /var/app/lib
+ADD priv /var/app/priv
+ADD web /var/app/web
+
+EXPOSE 4000
+
+CMD ["mix", "phoenix.server"]
