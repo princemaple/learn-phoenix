@@ -22,6 +22,10 @@ defmodule LearnPhoenix.TestChannel do
     {:noreply, socket}
   end
 
+  def handle_in("msg:new", payload, socket) do
+    {:reply, {:ok, "yeah"}, socket}
+  end
+
   # This is invoked every time a notification is being broadcast
   # to the client. The default implementation is just to push it
   # downstream but one could filter or change the event.
