@@ -1,6 +1,4 @@
-var socket = new Phoenix.Socket('/socket', {
-  logger: function(kind, msg, data) { console.log(`${kind}: ${msg}`, data); }
-});
+var socket = new Phoenix.Socket('/socket', {});
 
 socket.connect();
 
@@ -10,11 +8,9 @@ socket.onClose(function(event) { console.log("CLOSE", event); });
 
 var channel = socket.channel("tests:lobby", {});
 
-channel.join().receive("ignore", function() { console.log("auth error"); })
-           .receive("ok", function() { console.log("join ok"); });
-channel.onError(function() { console.log("something went wrong", e); });
-channel.onClose(function() { console.log("channel closed", e); });
-
-setTimeout(function() {
-  channel.push("new:msg", { a: 1, b: 2 });
-}, 2000);
+channel.join().receive("ok", function() {
+  channel.push('shout', { msg: 'omgomgomgomg' + (new Date) });
+  channel.push('msg:new', { a: 1, b: 2 });
+});
+channel.onError(function(event) { console.log("something went wrong", event); });
+channel.onClose(function(event) { console.log("channel closed", event); });

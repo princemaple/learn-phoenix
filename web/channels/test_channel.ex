@@ -18,12 +18,12 @@ defmodule LearnPhoenix.TestChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (tests:lobby).
   def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+    broadcast socket, "shout", Map.update!(payload, "msg", fn(v) -> String.upcase(v) end)
     {:noreply, socket}
   end
 
   def handle_in("msg:new", payload, socket) do
-    {:reply, {:ok, "yeah"}, socket}
+    {:reply, {:ok, payload}, socket}
   end
 
   # This is invoked every time a notification is being broadcast
